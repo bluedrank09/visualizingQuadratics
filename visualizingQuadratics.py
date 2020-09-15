@@ -1,26 +1,25 @@
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
-# def drawGraph(xList, yList):
-#     figure = plt.figure()
+def drawGraph(xList, yList):
+    figure = plt.figure()
 
-#     graph = figure.add_subplot(111)
+    graph = figure.add_subplot(111)
     
-#     graph.plot(xList, yList)
+    graph.plot(xList, yList)
 
-#     graph.set_xlabel('X number from range')
-#     graph.set_ylabel('After equation done')
+    graph.set_xlabel('X number from range')
+    graph.set_ylabel('After equation done')
 
-#     plt.show() 
+    plt.show() 
 
 def checkEquation(equation):
     # valueA = what you multiply x^2 by, like 8 times x^2. 8 is a.
-    # valueX is the x.
+    # valueX is the x, which comes from range.
     # the equation is ax^2+bx+c
     try:
         #currentValue = 0
 
         if not equation[0].isdigit():
-            #currentValue = equation[0]
             raise Exception("Missing a number here to use for a")
         
         if equation[1] != 'x':
@@ -34,11 +33,6 @@ def checkEquation(equation):
 
         if not (equation[4] == '+' or equation[4] =='-'):
             raise Exception('Please enter a "+" or "-"')
-            #valueB = equation[5]
-            #if equation[4] == "+":
-                #currentValue = currentValue + valueB
-            #elif equation[4] == "-":
-                #currentValue = currentValue - valueB
 
         if  not equation[5].isdigit():
             raise Exception('Please enter a number for b')
@@ -54,29 +48,48 @@ def checkEquation(equation):
 
         return(True)
 
+        
+
     except Exception as error:
         raise error
 
 
-def getNumbersInRange(numberForRange):
+def doCalculations(equation ,numberForRange):
+    xList = []
+    yList = []
 
-    #xList = []
-    #yList = []
+    for number in range(-numberForRange, numberForRange+1):
+        valueA = int(equation[0])
+        valueB = int(equation[5])
+        valueC = int(equation[8])
 
-    #for number in range(-numberForRange, numberForRange+1):
-        #newNumber = number**2  + 2*number + 1
-    #     xList.append(number)
-    #     yList.append(newNumber)
-    # drawGraph(xList, yList)
-        pass
+        firstIteration = int(valueA*number**2)
+
+        if equation[4] == '+':
+            secondIteration = int(firstIteration + valueB*number)
+        elif equation[4] == '-':
+            secondIteration = int(firstIteration - valueB*number)
+        
+        if equation[7] == '+':
+            thirdIteration = int(secondIteration + valueC*number)
+        elif equation[7] == '-':
+            thirdIteration = int(secondIteration - valueC*number)
+
+        xList.append(number)
+        yList.append(thirdIteration)
+    print(xList)
+    print(yList)
+
+    drawGraph(xList, yList)
+        
         
 
 if __name__ == "__main__":
     try:
         equation = input("Give me the equation that I will use (must fit format ax^2 +/- bx +/- c) : ")
         numberForRange = int(input(f"Give me a number to use as the maximum for the range of numbers : "))
-        print(checkEquation(equation))
-        #getNumbersInRange(equation, numberForRange)
+        checkEquation(equation)
+        doCalculations(equation, numberForRange)
 
     except Exception as error:
         print(error)
